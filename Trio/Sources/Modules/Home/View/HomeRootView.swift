@@ -96,7 +96,7 @@ extension Home {
                         .foregroundStyle(Color.insulin)
                         .padding(.horizontal, 8)
                         .padding(.vertical, 3)
-                        .background(Capsule().fill(.ultraThinMaterial))
+                        .glassMaterialFill(Capsule())
                         .frame(height: chartHeight * 0.10)
                         .padding(.trailing, 16)
                 }
@@ -123,6 +123,7 @@ extension Home {
                         Circle()
                             .stroke(Color.primary.opacity(0.4), lineWidth: 2)
                     )
+                    .accessibilityLabel(Text("Chart legend"))
             }
             .buttonStyle(.plain)
             .contentShape(Circle())
