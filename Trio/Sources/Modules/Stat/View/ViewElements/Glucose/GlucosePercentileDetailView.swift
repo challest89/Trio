@@ -67,5 +67,14 @@ struct GlucoseDailyPercentileDetailView: View {
                 selectedPercentile = (selectedPercentile == type) ? nil : type
             }
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text(label))
+        .accessibilityValue(Text(Decimal(value).formatted(for: units)))
+        .accessibilityAddTraits(type == selectedPercentile ? [.isButton, .isSelected] : .isButton)
+        .accessibilityAction {
+            withAnimation {
+                selectedPercentile = (selectedPercentile == type) ? nil : type
+            }
+        }
     }
 }

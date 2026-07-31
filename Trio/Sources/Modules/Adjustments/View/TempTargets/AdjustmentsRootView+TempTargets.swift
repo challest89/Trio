@@ -215,5 +215,21 @@ extension Adjustments.RootView {
                     .foregroundStyle(.secondary)
             }
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text(tempTarget.name ?? ""))
+        .accessibilityValue(Text(
+            formattedGlucose(glucose: target as Decimal) + " "
+                + String(localized: "for", comment: "duration connector") + " "
+                + (Formatter.integerFormatter.string(from: (tempTarget.duration ?? 0) as NSNumber) ?? "0") + " "
+                + String(localized: "min", comment: "minutes abbreviation")
+                + (state.isAdjustSensEnabled(usingTarget: tempTargetValue) ? ", \(percentage)%" : "")
+        ))
+        .accessibilityHint(
+            onTap != nil
+                ? Text(String(localized: "Double tap to enable this temp target", comment: "Accessibility hint"))
+                : Text("")
+        )
+        .accessibilityAddTraits(showCheckmark && isSelected ? [.isButton, .isSelected] : .isButton)
+        .accessibilityAction { onTap?() }
     }
 }
