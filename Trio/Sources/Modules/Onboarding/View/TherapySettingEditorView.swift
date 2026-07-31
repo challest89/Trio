@@ -92,6 +92,18 @@ struct TherapySettingEditorView: View {
                                 .contentShape(Rectangle())
                             }
                             .buttonStyle(.plain)
+                            .accessibilityLabel(Text(entryAccessibilityLabel(for: item, unit: unit)))
+                            .accessibilityHint(Text(
+                                "Opens a picker to edit this entry",
+                                comment: "Accessibility hint for a schedule entry"
+                            ))
+                            .accessibilityAction(named: Text("Delete")) {
+                                if let index = items.firstIndex(where: { $0.id == item.id }), items.count > 1 {
+                                    items.remove(at: index)
+                                    selectedItemID = nil
+                                    validateTherapySettingItems()
+                                }
+                            }
 
                             if selectedItemID == item.id {
                                 timeValuePickerRow(
@@ -294,6 +306,13 @@ struct TherapySettingEditorView: View {
              .mgdLPerUnit:
             return decimalValue.description
         }
+    }
+
+    /// One spoken string per schedule entry, e.g. "1.2 U/hr, starts at 6:00 AM".
+    private func entryAccessibilityLabel(for item: TherapySettingItem, unit: TherapySettingUnit) -> String {
+        let timeString = timeFormatter.string(from: Date(timeIntervalSince1970: item.time))
+        return "\(displayText(for: unit, decimalValue: item.value)) \(unit.displayName), " +
+            String(localized: "starts at", comment: "Accessibility: schedule entry start time") + " \(timeString)"
     }
 }
 
