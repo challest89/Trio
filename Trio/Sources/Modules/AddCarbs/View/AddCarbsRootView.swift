@@ -49,6 +49,11 @@ extension AddCarbs {
                             numberFormatter: formatter
                         )
                         Text(state.carbs > state.maxCarbs ? "⚠️" : "g").foregroundColor(.secondary)
+                            .accessibilityLabel(Text(
+                                state.carbs > state.maxCarbs
+                                    ? String(localized: "grams, over the maximum", comment: "Accessibility: value exceeds limit")
+                                    : String(localized: "grams", comment: "Gram unit, spoken")
+                            ))
                     }.padding(.vertical)
 
                     if state.useFPUconversion {
@@ -277,12 +282,22 @@ extension AddCarbs {
                 Spacer()
                 TextFieldWithToolBar(text: $state.fat, placeholder: "0", numberFormatter: formatter)
                 Text(state.fat > state.maxFat ? "⚠️" : "g").foregroundColor(.secondary)
+                    .accessibilityLabel(Text(
+                        state.fat > state.maxFat
+                            ? String(localized: "grams, over the maximum", comment: "Accessibility: value exceeds limit")
+                            : String(localized: "grams", comment: "Gram unit, spoken")
+                    ))
             }
             HStack {
                 Text("Protein").foregroundColor(.red) // .fontWeight(.thin)
                 Spacer()
                 TextFieldWithToolBar(text: $state.protein, placeholder: "0", numberFormatter: formatter)
                 Text(state.protein > state.maxProtein ? "⚠️" : "g").foregroundColor(.secondary)
+                    .accessibilityLabel(Text(
+                        state.protein > state.maxProtein
+                            ? String(localized: "grams, over the maximum", comment: "Accessibility: value exceeds limit")
+                            : String(localized: "grams", comment: "Gram unit, spoken")
+                    ))
             }
         }
     }
