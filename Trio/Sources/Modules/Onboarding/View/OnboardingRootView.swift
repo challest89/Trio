@@ -239,6 +239,19 @@ struct OnboardingProgressBar: View {
                 }
             }
         }.padding(.horizontal)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(Text(progressAccessibilityLabel))
+    }
+
+    private var progressAccessibilityLabel: String {
+        let chapterCount = OnboardingChapter.allCases.count
+        let chapter = String(
+            format: String(localized: "Chapter %1$d of %2$d, %3$@", comment: "Accessibility: onboarding progress"),
+            currentChapter.rawValue + 1,
+            chapterCount,
+            currentChapter.title
+        )
+        return chapter
     }
 
     private var renderedSteps: [(id: String, step: OnboardingStep, substeps: Int?)] {
@@ -411,30 +424,33 @@ struct OnboardingStepContent: View {
 
     private var contentHeader: some View {
         HStack {
-            if currentStep == .nightscout {
-                Image(currentStep.iconName)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 60, height: 60)
-            } else if currentStep == .bluetooth {
-                Image(currentStep.iconName)
-                    .font(.system(size: 40))
-                    .foregroundColor(currentStep.accentColor)
-                    .frame(width: 60, height: 60)
-                    .background(
-                        Circle()
-                            .fill(currentStep.accentColor.opacity(0.2))
-                    )
-            } else {
-                Image(systemName: currentStep.iconName)
-                    .font(.system(size: 40))
-                    .foregroundColor(currentStep.accentColor)
-                    .frame(width: 60, height: 60)
-                    .background(
-                        Circle()
-                            .fill(currentStep.accentColor.opacity(0.2))
-                    )
+            Group {
+                if currentStep == .nightscout {
+                    Image(currentStep.iconName)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 60, height: 60)
+                } else if currentStep == .bluetooth {
+                    Image(currentStep.iconName)
+                        .font(.system(size: 40))
+                        .foregroundColor(currentStep.accentColor)
+                        .frame(width: 60, height: 60)
+                        .background(
+                            Circle()
+                                .fill(currentStep.accentColor.opacity(0.2))
+                        )
+                } else {
+                    Image(systemName: currentStep.iconName)
+                        .font(.system(size: 40))
+                        .foregroundColor(currentStep.accentColor)
+                        .frame(width: 60, height: 60)
+                        .background(
+                            Circle()
+                                .fill(currentStep.accentColor.opacity(0.2))
+                        )
+                }
             }
+            .accessibilityHidden(true)
 
             VStack(alignment: .leading) {
                 Text(currentStep.title)
@@ -449,6 +465,8 @@ struct OnboardingStepContent: View {
             }
         }
         .padding(.horizontal)
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(.isHeader)
     }
 }
 

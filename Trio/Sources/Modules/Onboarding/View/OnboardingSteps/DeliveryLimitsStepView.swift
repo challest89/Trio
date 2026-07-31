@@ -85,6 +85,17 @@ struct DeliveryLimitsStepView: View {
                         displayPicker.wrappedValue.toggle()
                     }
             }
+            .contentShape(Rectangle())
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(Text(label))
+            .accessibilityValue(Text(displayString(for: substep, decimalValue: decimalValue.wrappedValue)))
+            .accessibilityHint(Text(
+                displayPicker.wrappedValue
+                    ? String(localized: "Closes the value picker", comment: "Accessibility hint")
+                    : String(localized: "Opens a picker to change this limit", comment: "Accessibility hint")
+            ))
+            .accessibilityAddTraits(.isButton)
+            .accessibilityAction { displayPicker.wrappedValue.toggle() }
 
             if displayPicker.wrappedValue {
                 Picker(selection: decimalValue, label: Text(label)) {
@@ -102,17 +113,21 @@ struct DeliveryLimitsStepView: View {
     }
 
     private func displayText(for substep: DeliveryLimitSubstep, decimalValue: Decimal) -> Text {
+        Text(displayString(for: substep, decimalValue: decimalValue))
+    }
+
+    private func displayString(for substep: DeliveryLimitSubstep, decimalValue: Decimal) -> String {
         switch substep {
         case .maxBasal:
-            return Text("\(decimalValue) \(String(localized: "U/hr", comment: "Insulin unit per hour abbreviation"))")
+            return "\(decimalValue) \(String(localized: "U/hr", comment: "Insulin unit per hour abbreviation"))"
         case .maxBolus,
              .maxIOB:
-            return Text("\(decimalValue) \(String(localized: "U", comment: "Insulin unit abbreviation"))")
+            return "\(decimalValue) \(String(localized: "U", comment: "Insulin unit abbreviation"))"
         case .maxCOB:
-            return Text("\(decimalValue) \(String(localized: "g", comment: "Gram abbreviation"))")
+            return "\(decimalValue) \(String(localized: "g", comment: "Gram abbreviation"))"
         case .minimumSafetyThreshold:
             let optionallyParsedValue = state.units == .mgdL ? decimalValue : decimalValue.asMmolL
-            return Text("\(optionallyParsedValue) \(state.units.rawValue)")
+            return "\(optionallyParsedValue) \(state.units.rawValue)"
         }
     }
 }
