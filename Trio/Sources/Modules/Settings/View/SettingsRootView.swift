@@ -140,6 +140,7 @@ extension Settings {
                                 Image(systemName: "doc.on.doc.fill")
                             }
                             .buttonStyle(.plain)
+                            .accessibilityLabel(Text("Copy version information"))
                             Text("BRANCH: \(buildDetails.branchAndSha)")
                         }.textCase(nil),
                         content: {
