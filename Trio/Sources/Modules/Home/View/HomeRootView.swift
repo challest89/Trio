@@ -421,6 +421,22 @@ extension Home {
                     }
                 }
                 .accessibilityLabel(Text("Add Treatment"))
+                .accessibilityAddTraits(.isButton)
+                // the tap/long-press gestures are invisible to VoiceOver; expose both
+                .accessibilityAction {
+                    state.showModal(for: .treatmentView)
+                }
+                .accessibilityAction(named: Text("Quick Pick Treatments")) {
+                    guard state.enableQuickPickTreatments else { return }
+                    Task {
+                        await state.loadQuickPickTreatmentSuggestions()
+                        if state.quickPickBolusSuggestions.isEmpty, state.quickPickCarbSuggestions.isEmpty {
+                            showQuickPickTreatmentsNoHistory = true
+                        } else {
+                            showQuickPickTreatmentsPicker = true
+                        }
+                    }
+                }
         }
 
         private var carbsRequiredBadgeValue: String? {
