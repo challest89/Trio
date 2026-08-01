@@ -81,6 +81,7 @@ extension DeviceAlarms {
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     Button { sheet = .picker } label: { Image(systemName: "plus") }
+                        .accessibilityLabel(Text("Add device alarm"))
                 }
             }
             .sheet(item: $sheet, onDismiss: handleSheetDismiss) { which in

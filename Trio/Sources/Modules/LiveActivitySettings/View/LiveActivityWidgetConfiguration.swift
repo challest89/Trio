@@ -165,6 +165,7 @@ struct LiveActivityWidgetConfiguration: BaseView {
                         .clipShape(Circle())
                         .font(.title3)
                 }
+                .accessibilityLabel(Text("Remove widget"))
                 .offset(x: 10, y: -10)
                 .confirmationDialog("Remove Widget", isPresented: $isRemovalConfirmationPresented, titleVisibility: .hidden) {
                     Button("Remove Widget", role: .destructive) {
@@ -194,6 +195,7 @@ struct LiveActivityWidgetConfiguration: BaseView {
                 )
             }
             .buttonStyle(.plain)
+            .accessibilityLabel(Text("Add widget"))
         }
     }
 

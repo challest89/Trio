@@ -66,6 +66,7 @@ extension AddCarbs {
                             if isFocused {
                                 Button { isFocused = false } label: { Image(systemName: "keyboard.chevron.compact.down") }
                                     .controlSize(.mini)
+                                    .accessibilityLabel(Text("Dismiss keyboard"))
                             }
                         }.focused($isFocused)
 
@@ -251,6 +252,7 @@ extension AddCarbs {
                         if state.carbs == 0, state.fat == 0, state.protein == 0 { state.summation = [] }
                     }
                     label: { Text("[ -1 ]") }
+                        .accessibilityLabel(Text("Remove one serving"))
                         .disabled(
                             state
                                 .selection == nil ||
@@ -269,6 +271,7 @@ extension AddCarbs {
                         state.addPresetToNewMeal()
                     }
                     label: { Text("[ +1 ]") }
+                        .accessibilityLabel(Text("Add one serving"))
                         .disabled(state.selection == nil)
                         .buttonStyle(BorderlessButtonStyle())
                         .accentColor(.blue)

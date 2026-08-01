@@ -229,6 +229,7 @@ extension Treatments {
                                             Image(systemName: "xmark.circle.fill")
                                         }
                                         .buttonStyle(.plain)
+                                        .accessibilityLabel(Text("Dismiss"))
                                     }
                                     .listRowBackground(Color.orange.opacity(0.75))
                                     .transition(.opacity)
@@ -252,6 +253,7 @@ extension Treatments {
                                 } else {
                                     Button { state.date = state.date.addingTimeInterval(-15.minutes.timeInterval) }
                                     label: { Image(systemName: "minus.circle") }.tint(.blue).buttonStyle(.borderless)
+                                        .accessibilityLabel(Text("15 minutes earlier"))
 
                                     DatePicker(
                                         "Time",
@@ -271,6 +273,7 @@ extension Treatments {
                                         state.date = state.date.addingTimeInterval(15.minutes.timeInterval)
                                     }
                                     label: { Image(systemName: "plus.circle") }.tint(.blue).buttonStyle(.borderless)
+                                        .accessibilityLabel(Text("15 minutes later"))
                                 }
                             }
 
