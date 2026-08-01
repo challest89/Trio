@@ -38,6 +38,7 @@ struct TidepoolStartView: BaseView {
                                                 .foregroundColor(.green).font(.caption2)
                                                 .offset(x: 9, y: 6)
                                         }
+                                        .accessibilityHidden(true)
                                     }
                                 }
                                 .frame(maxWidth: .infinity, alignment: .center)
