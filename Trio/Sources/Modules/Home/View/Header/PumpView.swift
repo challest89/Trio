@@ -87,6 +87,9 @@ struct PumpView: View {
                         Capsule()
                             .stroke(reservoirColor.opacity(0.4), lineWidth: 2)
                     )
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel(Text("Reservoir"))
+                    .accessibilityValue(Text(reservoirAccessibilityValue))
                 }
 
                 if (battery.first?.display) != nil, let shouldBatteryDisplay = battery.first?.display, shouldBatteryDisplay {
@@ -97,6 +100,9 @@ struct PumpView: View {
                         Text("\(Formatter.integerFormatter.string(for: battery.first?.percent ?? 100) ?? "100") %")
                             .font(.callout).fontWeight(.bold).fontDesign(.rounded)
                     }
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel(Text("Pump battery"))
+                    .accessibilityValue(Text(batteryAccessibilityValue))
                 }
 
                 if let date = expiresAtDate {
@@ -130,6 +136,9 @@ struct PumpView: View {
         }
         // aligns the stopwatch icon exactly with the first pixel of the reservoir icon
         .padding(.leading, date.timeIntervalSince(timerDate) > 0 || activatedAtDate != nil ? 12 : 0)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text("Pod expiration"))
+        .accessibilityValue(Text(remainingTimeString(time: date.timeIntervalSince(timerDate))))
     }
 
     private func remainingTimeString(time: TimeInterval) -> String {
@@ -159,6 +168,37 @@ struct PumpView: View {
         }
 
         return "\(minutes)" + String(localized: "m", comment: "abbreviation for minutes")
+    }
+
+    /// Reservoir amount plus a spoken severity word, so the color-coded low state is not lost.
+    private var reservoirAccessibilityValue: String {
+        guard let reservoir = reservoir else { return "" }
+        let amount = reservoir == 0xDEAD_BEEF
+            ? "50+ " + String(localized: "U", comment: "Insulin unit")
+            : (Formatter.integerFormatter.string(from: reservoir as NSNumber) ?? "0")
+            + " " + String(localized: "U", comment: "Insulin unit")
+        switch reservoir {
+        case ...10:
+            return amount + ", " + String(localized: "low", comment: "Accessibility: reservoir severity")
+        case ...30:
+            return amount + ", " + String(localized: "getting low", comment: "Accessibility: reservoir severity")
+        default:
+            return amount
+        }
+    }
+
+    /// Battery percentage plus a spoken severity word mirroring `batteryColor`.
+    private var batteryAccessibilityValue: String {
+        let percent = Formatter.integerFormatter.string(for: battery.first?.percent ?? 100) ?? "100"
+        let value = "\(percent) %"
+        switch battery.first?.percent {
+        case .some(...10):
+            return value + ", " + String(localized: "low", comment: "Accessibility: battery severity")
+        case .some(...20):
+            return value + ", " + String(localized: "getting low", comment: "Accessibility: battery severity")
+        default:
+            return value
+        }
     }
 
     private var batteryColor: Color {

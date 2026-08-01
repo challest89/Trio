@@ -54,7 +54,7 @@ extension DeviceAlarms {
                                     sheet = .help(severity)
                                 }) {
                                     HStack {
-                                        Image(systemName: "questionmark.circle")
+                                        Image(systemName: "questionmark.circle").accessibilityLabel(Text("More information"))
                                     }
                                 }
                                 .buttonStyle(BorderlessButtonStyle())

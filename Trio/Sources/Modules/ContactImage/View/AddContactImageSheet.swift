@@ -169,7 +169,7 @@ struct AddContactImageSheet: View {
                             state.isHelpSheetPresented.toggle()
                         },
                         label: {
-                            Image(systemName: "questionmark.circle")
+                            Image(systemName: "questionmark.circle").accessibilityLabel(Text("More information"))
                         }
                     )
                 }
