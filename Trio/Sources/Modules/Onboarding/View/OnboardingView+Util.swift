@@ -550,10 +550,12 @@ struct BulletPoint: View {
     var body: some View {
         HStack(alignment: .top) {
             Text("•")
+                .accessibilityHidden(true)
             Text(text)
                 .fixedSize(horizontal: false, vertical: true)
                 .multilineTextAlignment(.leading)
         }
+        .accessibilityElement(children: .combine)
     }
 }
 

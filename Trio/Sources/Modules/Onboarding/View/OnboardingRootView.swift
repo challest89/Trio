@@ -1,6 +1,7 @@
 import Foundation
 import SwiftUI
 import Swinject
+import UIKit
 
 /// The main onboarding view that manages navigation between onboarding steps.
 extension Onboarding {
@@ -405,20 +406,36 @@ struct OnboardingStepContent: View {
                 }
                 .padding(.bottom, 80)
             }
-            .onChange(of: currentStep) { _, _ in scrollProxy.scrollTo("top", anchor: .top) }
-            .onChange(of: currentStartupSubstep) { _, _ in scrollProxy.scrollTo("top", anchor: .top) }
-            .onChange(of: currentNightscoutSubstep) { _, _ in scrollProxy.scrollTo("top", anchor: .top) }
-            .onChange(of: currentDeliverySubstep) { _, _ in scrollProxy.scrollTo("top", anchor: .top) }
-            .onChange(of: currentAlgorithmSettingsOverviewSubstep) { _, _ in scrollProxy.scrollTo("top", anchor: .top) }
-            .onChange(of: currentAutosensSubstep) { _, _ in scrollProxy.scrollTo("top", anchor: .top) }
-            .onChange(of: currentSMBSubstep) { _, _ in scrollProxy.scrollTo("top", anchor: .top) }
-            .onChange(of: currentTargetBehaviorSubstep) { _, _ in scrollProxy.scrollTo("top", anchor: .top) }
+            .onChange(of: currentStep) { _, _ in scrollProxy.scrollTo("top", anchor: .top)
+                announceScreenChange() }
+            .onChange(of: currentStartupSubstep) { _, _ in scrollProxy.scrollTo("top", anchor: .top)
+                announceScreenChange() }
+            .onChange(of: currentNightscoutSubstep) { _, _ in scrollProxy.scrollTo("top", anchor: .top)
+                announceScreenChange() }
+            .onChange(of: currentDeliverySubstep) { _, _ in scrollProxy.scrollTo("top", anchor: .top)
+                announceScreenChange() }
+            .onChange(of: currentAlgorithmSettingsOverviewSubstep) { _, _ in scrollProxy.scrollTo("top", anchor: .top)
+                announceScreenChange() }
+            .onChange(of: currentAutosensSubstep) { _, _ in scrollProxy.scrollTo("top", anchor: .top)
+                announceScreenChange() }
+            .onChange(of: currentSMBSubstep) { _, _ in scrollProxy.scrollTo("top", anchor: .top)
+                announceScreenChange() }
+            .onChange(of: currentTargetBehaviorSubstep) { _, _ in scrollProxy.scrollTo("top", anchor: .top)
+                announceScreenChange() }
             .safeAreaInset(edge: .top) {
                 // avoid letting content scroll beneath the status bar / dynamic island for content views with not progress bar (which adds top spacing)
                 if currentStep == .startupInfo || currentStep == .completed {
                     Color.clear.frame(height: 0)
                 }
             }
+        }
+    }
+
+    /// Move VoiceOver focus back to the top of the new step; otherwise focus stays on the
+    /// "Next" button and the user must navigate backwards to reach the new content.
+    private func announceScreenChange() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+            UIAccessibility.post(notification: .screenChanged, argument: nil)
         }
     }
 
