@@ -31,8 +31,7 @@ struct AlarmGramsSection: View {
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel(Text(title))
                 .accessibilityValue(Text(
-                    "\(Int(NSDecimalNumber(decimal: valueGrams).intValue)) "
-                        + String(localized: "g", comment: "Abbreviation for grams")
+                    "\(Int(NSDecimalNumber(decimal: valueGrams).intValue)) " + UnitSpelling.spoken("g")
                 ))
                 .accessibilityHint(Text(
                     showPicker

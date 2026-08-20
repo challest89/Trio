@@ -215,7 +215,7 @@ struct MainChartView: View {
         guard let latest = sample.last else {
             return String(localized: "Glucose chart, no data", comment: "Accessibility: empty chart")
         }
-        let unitLabel = units == .mgdL ? String(localized: "mg/dL") : String(localized: "mmol/L")
+        let unitLabel = units.spokenValue
         func format(_ value: Int16) -> String {
             units == .mgdL ? Decimal(value).description : Decimal(value).formattedAsMmolL
         }

@@ -26,7 +26,7 @@ struct TargetPicker: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(Text(label))
         .accessibilityValue(Text(
-            (units == .mgdL ? selection.description : selection.formattedAsMmolL) + " " + units.rawValue
+            (units == .mgdL ? selection.description : selection.formattedAsMmolL) + " " + units.spokenValue
         ))
         .accessibilityHint(Text(
             displayPickerTarget

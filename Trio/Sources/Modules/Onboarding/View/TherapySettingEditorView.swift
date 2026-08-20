@@ -311,7 +311,7 @@ struct TherapySettingEditorView: View {
     /// One spoken string per schedule entry, e.g. "1.2 U/hr, starts at 6:00 AM".
     private func entryAccessibilityLabel(for item: TherapySettingItem, unit: TherapySettingUnit) -> String {
         let timeString = timeFormatter.string(from: Date(timeIntervalSince1970: item.time))
-        return "\(displayText(for: unit, decimalValue: item.value)) \(unit.displayName), " +
+        return "\(displayText(for: unit, decimalValue: item.value)) \(UnitSpelling.spoken(unit.displayName)), " +
             String(localized: "starts at", comment: "Accessibility: schedule entry start time") + " \(timeString)"
     }
 }

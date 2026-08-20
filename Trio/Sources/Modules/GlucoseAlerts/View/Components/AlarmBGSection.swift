@@ -29,7 +29,7 @@ struct AlarmBGSection: View {
                 .onTapGesture { showPicker.toggle() }
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel(Text(title))
-                .accessibilityValue(Text(valueMgDL.formatted(for: units) + " " + units.rawValue))
+                .accessibilityValue(Text(valueMgDL.formatted(for: units) + " " + units.spokenValue))
                 .accessibilityHint(Text(
                     showPicker
                         ? String(localized: "Closes the value picker", comment: "Accessibility hint")

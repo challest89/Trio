@@ -127,7 +127,7 @@ extension Home.RootView {
                 .accessibilityLabel(Text("Eventual glucose"))
                 .accessibilityValue(Text(
                     (state.units == .mgdL ? eventualGlucose.description : eventualGlucose.formattedAsMmolL)
-                        + " " + state.units.rawValue
+                        + " " + state.units.spokenValue
                 ))
             } else {
                 HStack {

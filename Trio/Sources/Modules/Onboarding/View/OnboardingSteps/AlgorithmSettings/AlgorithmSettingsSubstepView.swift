@@ -265,7 +265,7 @@ struct AlgorithmSettingsSubstepView<Substep: AlgorithmSubstepProtocol & RawRepre
                             .contentShape(Rectangle())
                             .accessibilityElement(children: .ignore)
                             .accessibilityLabel(Text(label))
-                            .accessibilityValue(Text(displayString(
+                            .accessibilityValue(Text(accessibilityValueString(
                                 for: substep,
                                 decimalValue: decimalValue.wrappedValue,
                                 units: state.units
@@ -325,6 +325,28 @@ struct AlgorithmSettingsSubstepView<Substep: AlgorithmSubstepProtocol & RawRepre
             return "\(decimalValue) \(String(localized: "min"))"
         default:
             return "" // not needed, because input type is boolean
+        }
+    }
+
+    /// Same value as `displayString` but with the unit spelled out for VoiceOver.
+    private func accessibilityValueString(for substep: Substep, decimalValue: Decimal, units: GlucoseUnits) -> String {
+        guard let step = substep.toAlgorithmSubstep() else {
+            return decimalValue.description
+        }
+        switch step {
+        case .autosensMax,
+             .autosensMin,
+             .maxDeltaGlucoseThreshold:
+            return "\(decimalValue * 100) \(UnitSpelling.spoken("%"))"
+        case .enableSMBWithHighGlucoseTarget,
+             .halfBasalTarget:
+            let displayValue = units == .mmolL ? decimalValue.asMmolL : decimalValue
+            return "\(displayValue.description) \(units.spokenValue)"
+        case .maxSMBMinutes,
+             .maxUAMMinutes:
+            return "\(decimalValue) \(UnitSpelling.spoken("min"))"
+        default:
+            return ""
         }
     }
 }

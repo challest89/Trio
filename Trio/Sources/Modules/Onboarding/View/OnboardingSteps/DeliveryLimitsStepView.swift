@@ -88,7 +88,7 @@ struct DeliveryLimitsStepView: View {
             .contentShape(Rectangle())
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(Text(label))
-            .accessibilityValue(Text(displayString(for: substep, decimalValue: decimalValue.wrappedValue)))
+            .accessibilityValue(Text(accessibilityValueString(for: substep, decimalValue: decimalValue.wrappedValue)))
             .accessibilityHint(Text(
                 displayPicker.wrappedValue
                     ? String(localized: "Closes the value picker", comment: "Accessibility hint")
@@ -128,6 +128,22 @@ struct DeliveryLimitsStepView: View {
         case .minimumSafetyThreshold:
             let optionallyParsedValue = state.units == .mgdL ? decimalValue : decimalValue.asMmolL
             return "\(optionallyParsedValue) \(state.units.rawValue)"
+        }
+    }
+
+    /// Same value as `displayString` but with the unit spelled out for VoiceOver.
+    private func accessibilityValueString(for substep: DeliveryLimitSubstep, decimalValue: Decimal) -> String {
+        switch substep {
+        case .maxBasal:
+            return "\(decimalValue) \(UnitSpelling.spoken("U/hr"))"
+        case .maxBolus,
+             .maxIOB:
+            return "\(decimalValue) \(UnitSpelling.spoken("U"))"
+        case .maxCOB:
+            return "\(decimalValue) \(UnitSpelling.spoken("g"))"
+        case .minimumSafetyThreshold:
+            let optionallyParsedValue = state.units == .mgdL ? decimalValue : decimalValue.asMmolL
+            return "\(optionallyParsedValue) \(state.units.spokenValue)"
         }
     }
 }

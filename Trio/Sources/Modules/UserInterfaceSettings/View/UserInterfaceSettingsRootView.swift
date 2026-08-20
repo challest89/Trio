@@ -243,7 +243,7 @@ extension UserInterfaceSettings {
                                 .accessibilityLabel(Text("Low Threshold"))
                                 .accessibilityValue(Text(
                                     (state.units == .mgdL ? state.low.description : state.low.asMmolL.description)
-                                        + (state.units == .mgdL ? " mg/dL" : " mmol/L")
+                                        + " " + state.units.spokenValue
                                 ))
                                 .accessibilityHint(Text(
                                     displayPickerLowThreshold
@@ -295,7 +295,7 @@ extension UserInterfaceSettings {
                                 .accessibilityLabel(Text("High Threshold"))
                                 .accessibilityValue(Text(
                                     (state.units == .mgdL ? state.high.description : state.high.asMmolL.description)
-                                        + (state.units == .mgdL ? " mg/dL" : " mmol/L")
+                                        + " " + state.units.spokenValue
                                 ))
                                 .accessibilityHint(Text(
                                     displayPickerHighThreshold

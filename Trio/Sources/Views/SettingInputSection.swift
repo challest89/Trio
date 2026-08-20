@@ -200,7 +200,7 @@ struct SettingInputSection<VerboseHint: View>: View {
             }
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(Text(label))
-            .accessibilityValue(Text(displayString(for: setting, decimalValue: decimalValue.wrappedValue)))
+            .accessibilityValue(Text(accessibilityValueString(for: setting, decimalValue: decimalValue.wrappedValue)))
             .accessibilityHint(Text(
                 displayPicker.wrappedValue
                     ? String(localized: "Closes the value picker", comment: "Accessibility hint")
@@ -244,6 +244,27 @@ struct SettingInputSection<VerboseHint: View>: View {
             return "\(decimalValue) \(String(localized: "min", comment: "Minutes abbreviation"))"
         case .hour:
             return "\(decimalValue) \(String(localized: "hr", comment: "Hours abbreviation"))"
+        }
+    }
+
+    /// Same value as `displayString` but with the unit spelled out for VoiceOver.
+    private func accessibilityValueString(for setting: PickerSetting, decimalValue: Decimal) -> String {
+        switch setting.type {
+        case .glucose:
+            let displayValue = units == .mmolL ? decimalValue.asMmolL : decimalValue
+            return "\(displayValue.description) \(units.spokenValue)"
+        case .factor:
+            return "\(decimalValue * 100) \(UnitSpelling.spoken("%"))"
+        case .insulinUnit:
+            return "\(decimalValue) \(UnitSpelling.spoken("U"))"
+        case .insulinUnitPerHour:
+            return "\(decimalValue) \(UnitSpelling.spoken("U/hr"))"
+        case .gram:
+            return "\(decimalValue) \(UnitSpelling.spoken("g"))"
+        case .minute:
+            return "\(decimalValue) \(UnitSpelling.spoken("min"))"
+        case .hour:
+            return "\(decimalValue) \(UnitSpelling.spoken("hr"))"
         }
     }
 
