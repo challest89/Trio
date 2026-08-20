@@ -138,7 +138,7 @@ struct PumpView: View {
         .padding(.leading, date.timeIntervalSince(timerDate) > 0 || activatedAtDate != nil ? 12 : 0)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(Text("Pod expiration"))
-        .accessibilityValue(Text(remainingTimeString(time: date.timeIntervalSince(timerDate))))
+        .accessibilityValue(Text(remainingTimeStringAccessible(time: date.timeIntervalSince(timerDate))))
     }
 
     private func remainingTimeString(time: TimeInterval) -> String {
@@ -168,6 +168,30 @@ struct PumpView: View {
         }
 
         return "\(minutes)" + String(localized: "m", comment: "abbreviation for minutes")
+    }
+
+    /// Spoken remaining pod time — spells out days/hours/minutes so VoiceOver doesn't
+    /// read the compact "m" as "meters".
+    private func remainingTimeStringAccessible(time: TimeInterval) -> String {
+        guard time > 0 else {
+            return String(localized: "Replace pod", comment: "View/Header when pod expired")
+        }
+        var time = time
+        let days = Int(time / 1.days.timeInterval)
+        time -= days.days.timeInterval
+        let hours = Int(time / 1.hours.timeInterval)
+        time -= hours.hours.timeInterval
+        let minutes = Int(time / 1.minutes.timeInterval)
+
+        if days >= 1 {
+            return String(format: String(localized: "%1$d days %2$d hours", comment: "Accessibility: pod time"), days, hours)
+        }
+        if hours >= 1 {
+            return hours < 12
+                ? String(format: String(localized: "%1$d hours %2$d minutes", comment: "Accessibility: pod time"), hours, minutes)
+                : String(format: String(localized: "%d hours", comment: "Accessibility: pod time"), hours)
+        }
+        return String(format: String(localized: "%d minutes", comment: "Accessibility: pod time"), minutes)
     }
 
     /// Reservoir amount plus a spoken severity word, so the color-coded low state is not lost.

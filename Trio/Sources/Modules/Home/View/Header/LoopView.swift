@@ -57,7 +57,10 @@ struct LoopView: View {
         if isLooping {
             age = String(localized: "in progress", comment: "Accessibility: loop currently running")
         } else if determination.first?.deliverAt != nil, timeString != "--" {
-            age = String(format: String(localized: "last loop %@", comment: "Accessibility: loop age"), timeString)
+            age = String(
+                format: String(localized: "last loop %@", comment: "Accessibility: loop age"),
+                TimeAgoFormatter.minutesAgoAccessible(from: lastLoopDate)
+            )
         } else {
             age = ""
         }

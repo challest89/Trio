@@ -223,7 +223,7 @@ struct CurrentGlucoseView: View {
         if delta != "--" {
             parts.append(String(localized: "delta", comment: "Accessibility: glucose delta") + " \(delta)")
         }
-        parts.append(TimeAgoFormatter.minutesAgo(from: glucose.last?.date))
+        parts.append(TimeAgoFormatter.minutesAgoAccessible(from: glucose.last?.date))
         // Fold in the sensor-lifecycle tag (warmup countdown, "expired", "stabilizing") so
         // it is spoken; the visual tag is a child that the ignore above would otherwise drop.
         if let tag = tagLabel, !trendIsDownward, !tag.text.isEmpty {
