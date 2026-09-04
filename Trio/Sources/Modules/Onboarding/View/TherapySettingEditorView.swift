@@ -311,7 +311,7 @@ struct TherapySettingEditorView: View {
     /// One spoken string per schedule entry, e.g. "1.2 U/hr, starts at 6:00 AM".
     private func entryAccessibilityLabel(for item: TherapySettingItem, unit: TherapySettingUnit) -> String {
         let timeString = timeFormatter.string(from: Date(timeIntervalSince1970: item.time))
-        return "\(displayText(for: unit, decimalValue: item.value)) \(UnitSpelling.spoken(unit.displayName)), " +
+        return "\(displayText(for: unit, decimalValue: item.value)) \(unit.spokenName), " +
             String(localized: "starts at", comment: "Accessibility: schedule entry start time") + " \(timeString)"
     }
 }
@@ -369,6 +369,26 @@ enum TherapySettingUnit: String, CaseIterable {
             return "mmol/L"
         case .mgdL:
             return "mg/dL"
+        }
+    }
+
+    /// Fully spoken unit for VoiceOver. Localizable per case (so translations stay correct)
+    /// and grammatical — the denominator "unit" is singular, unlike the tokenized speller,
+    /// which is fed English keys and would pass translated abbreviations through unchanged.
+    var spokenName: String {
+        switch self {
+        case .mmolLPerUnit:
+            return String(localized: "millimoles per liter per unit", comment: "Accessibility: spoken unit")
+        case .mgdLPerUnit:
+            return String(localized: "milligrams per deciliter per unit", comment: "Accessibility: spoken unit")
+        case .unitPerHour:
+            return String(localized: "units per hour", comment: "Accessibility: spoken unit")
+        case .gramPerUnit:
+            return String(localized: "grams per unit", comment: "Accessibility: spoken unit")
+        case .mmolL:
+            return String(localized: "millimoles per liter", comment: "Accessibility: spoken unit")
+        case .mgdL:
+            return String(localized: "milligrams per deciliter", comment: "Accessibility: spoken unit")
         }
     }
 }

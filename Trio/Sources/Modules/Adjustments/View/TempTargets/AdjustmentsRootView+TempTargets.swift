@@ -162,7 +162,7 @@ extension Adjustments.RootView {
         )
         let remainingTime = tempTarget.date?.timeIntervalSinceNow ?? 0
 
-        return ZStack(alignment: .trailing) {
+        let row = ZStack(alignment: .trailing) {
             HStack {
                 VStack(alignment: .leading) {
                     HStack {
@@ -220,12 +220,18 @@ extension Adjustments.RootView {
                 + String(localized: "min", comment: "minutes abbreviation")
                 + (state.isAdjustSensEnabled(usingTarget: tempTargetValue) ? ", \(percentage)%" : "")
         ))
-        .accessibilityHint(
-            onTap != nil
-                ? Text(String(localized: "Double tap to enable this temp target", comment: "Accessibility hint"))
-                : Text("")
-        )
-        .accessibilityAddTraits(showCheckmark && isSelected ? [.isButton, .isSelected] : .isButton)
-        .accessibilityAction { onTap?() }
+        // Only tappable rows (presets) are buttons; scheduled rows are read-only, so they get
+        // neither the button trait, an activation, nor a hint.
+        return Group {
+            if let onTap {
+                row
+                    .accessibilityHint(Text(String(localized: "Enables this temp target", comment: "Accessibility hint")))
+                    .accessibilityAddTraits(showCheckmark && isSelected ? [.isButton, .isSelected] : .isButton)
+                    .accessibilityAction { onTap() }
+            } else {
+                row
+                    .accessibilityAddTraits(showCheckmark && isSelected ? .isSelected : [])
+            }
+        }
     }
 }

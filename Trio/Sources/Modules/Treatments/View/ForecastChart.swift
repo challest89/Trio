@@ -209,7 +209,7 @@ struct ForecastChart: View {
             state.units == .mgdL ? Decimal(value).description : Decimal(value).formattedAsMmolL
         }
         var parts = [String(localized: "Glucose and forecast chart", comment: "Accessibility: chart summary")]
-        if let latest = state.glucoseFromPersistence.last {
+        if let latest = state.latestGlucose {
             parts.append(String(localized: "latest", comment: "Accessibility") + " \(format(Int(latest.glucose))) \(unitLabel)")
         }
         let eventual: Int? = state.simulatedDetermination?.eventualBG
