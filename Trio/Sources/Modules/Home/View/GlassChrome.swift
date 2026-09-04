@@ -9,6 +9,10 @@ enum GlassChrome {
     static var panelShape: RoundedRectangle {
         RoundedRectangle(cornerRadius: panelCornerRadius, style: .continuous)
     }
+
+    /// Stand-in for glass/material when Reduce Transparency is on: no blur, so
+    /// nothing behind the panel bleeds through.
+    static let opaqueFill = Color(.secondarySystemGroupedBackground)
 }
 
 /// Glass panel background with optional tint; pre-26 falls back to
@@ -33,6 +37,8 @@ struct GlassPanelBackground: ViewModifier {
     }
 
     func body(content: Content) -> some View {
+        // Reduce Transparency / Increase Contrast skip the glass and material paths entirely
+        // for a fully opaque panel; the glass path in particular cannot be made opaque.
         if prefersOpaque {
             content.background(opaquePanel)
         } else if #available(iOS 26.0, *) {
