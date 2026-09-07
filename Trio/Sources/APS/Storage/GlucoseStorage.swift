@@ -562,7 +562,7 @@ final class BaseGlucoseStorage: GlucoseStorage, Injectable {
                 let dateString = result.date ?? Date()
                 let dateMilliseconds = Decimal(dateString.timeIntervalSince1970 * 1000).rounded()
                 if result.isManual {
-                    BloodGlucose(
+                    return BloodGlucose(
                         id: result.id?.uuidString ?? UUID().uuidString,
                         mbg: Int(result.glucose),
                         date: dateMilliseconds,
@@ -570,7 +570,7 @@ final class BaseGlucoseStorage: GlucoseStorage, Injectable {
                         type: "mbg"
                     )
                 } else {
-                    BloodGlucose(
+                    return BloodGlucose(
                         id: result.id?.uuidString ?? UUID().uuidString,
                         sgv: Int(result.glucose),
                         direction: BloodGlucose.Direction(from: result.direction ?? ""),
